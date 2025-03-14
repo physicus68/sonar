@@ -15,6 +15,9 @@
 
         var D = 2.0;
         var Dmax = 3.0;
+        var temps_vol = 0.0 ;
+        
+        
 
         AFRAME.registerComponent('propagation', {
             schema: {},
@@ -38,6 +41,15 @@
                     this.el.object3D.rotation.set(0, THREE.MathUtils.degToRad(180), 0);
                     this.el.object3D.position.set(D * 2, 0, 0);
                 }
+
+                if ( t > temps_vol){
+                    temps_vol = t;
+                }else{
+                    console.log(temps_vol)
+                    var label_tempsVol = document.getElementById("chronometre");
+                    label_tempsVol.innerHTML = "Temps de vol mesuré: " + temps_vol.toFixed(3)  + " s";
+                    temps_vol = 0;
+                };
 
             },
         });
@@ -137,6 +149,9 @@
                 <input type="range" min="5" max="100" value="50" class="slider" id="choixDistance">
                 Distance: <label id="affichageDistance"></label> m
             </p>
+            <p>
+                <label id="chronometre">*</label>
+            </p>
         </div>
     </div>
     <script>
@@ -144,6 +159,8 @@
         slider.value = D / Dmax * 100;
         var output = document.getElementById("affichageDistance");
         output.innerHTML = D.toFixed(2)
+
+   
 
         slider.ontouchmove = function(){
             D = Dmax * this.value * 0.01;
